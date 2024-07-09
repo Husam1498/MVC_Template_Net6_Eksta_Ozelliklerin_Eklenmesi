@@ -184,6 +184,11 @@ namespace MVC_Template_Net6_Eksta_Ozelliklerin_Eklenmesi.Controllers
             return RedirectToAction(nameof(Login));
         }
 
+    
+            ProfileInfoLoader();//fullname hatalarının gözükmesi için
+            return View("Profile");
+        }
+
 
 
     }
