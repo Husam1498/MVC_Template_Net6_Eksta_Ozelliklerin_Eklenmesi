@@ -27,6 +27,9 @@ namespace MVC_Template_Net6_Eksta_Ozelliklerin_Eklenmesi.Entites
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
+        [StringLength(255)]
+        public string? ProfilImageFileName { get; set; } = "no_image.jpeg";
+
         [Required]
         [StringLength(20)]
         public string Role { get; set; } = "user";

@@ -6,6 +6,7 @@ using MVC_Template_Net6_Eksta_Ozelliklerin_Eklenmesi.Entites;
 using MVC_Template_Net6_Eksta_Ozelliklerin_Eklenmesi.Models;
 using NETCore.Encrypt.Extensions;
 using System.ComponentModel.DataAnnotations;
+using System.Net.Mime;
 using System.Security.Claims;
 
 namespace MVC_Template_Net6_Eksta_Ozelliklerin_Eklenmesi.Controllers
@@ -140,6 +141,7 @@ namespace MVC_Template_Net6_Eksta_Ozelliklerin_Eklenmesi.Controllers
             User user = _dbContext.Users.SingleOrDefault(u => u.Id == userid);
 
             ViewData["Fullname"] = user.Fullname;
+            ViewData["ProfileImage"] = user.ProfilImageFileName;
 
         }
 
@@ -184,7 +186,31 @@ namespace MVC_Template_Net6_Eksta_Ozelliklerin_Eklenmesi.Controllers
             return RedirectToAction(nameof(Login));
         }
 
-    
+        [HttpPost]
+        public IActionResult ProfileChangeImage([Required] IFormFile file)
+        {
+            if (ModelState.IsValid)
+            {
+                Guid userid = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+                User user = _dbContext.Users.SingleOrDefault(u => u.Id == userid);
+
+                 string ContentType=file.ContentType ;
+                string[] _split = ContentType.Split('/');
+                string fileName = $"p_{user.Id}.{_split[1]}";
+                Stream stream = new FileStream($"wwwroot/uploads/{fileName}", FileMode.OpenOrCreate);
+
+                file.CopyTo(stream);
+                stream.Close();
+                stream.Dispose();
+                user.ProfilImageFileName = fileName;
+                _dbContext.SaveChanges();
+
+                return RedirectToAction(nameof(Profile));
+
+
+
+            }
             ProfileInfoLoader();//fullname hatalarının gözükmesi için
             return View("Profile");
         }
