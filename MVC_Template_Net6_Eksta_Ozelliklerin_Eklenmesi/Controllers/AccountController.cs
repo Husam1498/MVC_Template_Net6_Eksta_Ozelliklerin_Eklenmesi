@@ -195,9 +195,9 @@ namespace MVC_Template_Net6_Eksta_Ozelliklerin_Eklenmesi.Controllers
 
                 User user = _dbContext.Users.SingleOrDefault(u => u.Id == userid);
 
-                 string ContentType=file.ContentType ;
-                string[] _split = ContentType.Split('/');
-                string fileName = $"p_{user.Id}.{_split[1]}";
+                //string ContentType=file.ContentType ;
+               // string[] _split = ContentType.Split('/');
+                string fileName = $"p_{user.Id}.{file.ContentType.Split('/')[1]}";//ContentType=image/jpg =>jpg||png||jpeg
                 Stream stream = new FileStream($"wwwroot/uploads/{fileName}", FileMode.OpenOrCreate);
 
                 file.CopyTo(stream);

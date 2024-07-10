@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using MVC_Template_Net6_Eksta_Ozelliklerin_Eklenmesi.Entites;
+using System.Reflection;
 
 namespace MVC_Template_Net6_Eksta_Ozelliklerin_Eklenmesi
 {
@@ -12,6 +13,7 @@ namespace MVC_Template_Net6_Eksta_Ozelliklerin_Eklenmesi
 
             // Add services to the container.
             builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
+            builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());//AutoMappingConfig Classýný bulmasý için
             builder.Services.AddDbContext<DatabaseContext>(opts =>
             {
                 opts.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
