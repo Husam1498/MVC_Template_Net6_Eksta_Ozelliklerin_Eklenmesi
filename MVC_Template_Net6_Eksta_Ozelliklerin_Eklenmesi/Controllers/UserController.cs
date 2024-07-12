@@ -38,5 +38,11 @@ namespace MVC_Template_Net6_Eksta_Ozelliklerin_Eklenmesi.Controllers
 
             return View(userModels);
         }
+
+        public IActionResult Create()
+        {
+
+            return View();
+        }
     }
 }

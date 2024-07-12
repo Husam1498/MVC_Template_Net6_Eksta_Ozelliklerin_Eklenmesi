@@ -1,0 +1,67 @@
+﻿@model CreateUserModel
+
+@{
+    ViewData["Title"] = "Create User";
+}    
+<div class="row">
+    <div class="col-4 offset-4">
+       <h1 class="display-4 border-bottom text-center pb-2">@ViewData["Title"] </h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-4 offset-4">
+       <form method="post">
+           <div asp-validation-summary="ModelOnly" class="text-danger small"> </div>
+            <div class="form-group">
+                <label asp-for="Fullname" class="form-label">Fullname</label>
+                <input asp-for="Fullname" class="form-control" placeholder="john" />
+                <span asp-validation-for="Fullname" class="text-danger small"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Username" class="form-label">Username</label>
+                <input asp-for="Username" class="form-control" placeholder="john" />
+                <span asp-validation-for="Username" class="text-danger small"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Password" class="form-label">Password</label>
+                <input asp-for="Password" type="password" class="form-control" placeholder="P@ssword" />
+                <span asp-validation-for="Password" class="text-danger small"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RePassword" class="form-label">RePassword</label>
+                <input asp-for="RePassword" type="password" class="form-control" placeholder="P@ssword" />
+                <span asp-validation-for="RePassword" class="text-danger small"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Role" class="form-label">Role</label>
+                
+                <select asp-for="Role" class="form-control">
+                    <option value="" > Please Select </option>
+                    <option value="admin">Admin </option>
+                    <option value="user"> User </option>
+                    <option value="user_pro"> User Pro </option>
+                </select>
+                <span asp-validation-for="Role" class="text-danger small"></span>
+            </div>
+
+
+
+
+            <div class="form-group">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" asp-for="Locked"/>
+                    <label class="form-check-label"asp-for="Locked" >
+                          Locked                      
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group  mt-3">
+                <button type="submit" class="btn btn-primary "><i class="fa-solid fa-save me-2"></i>Save</button>
+            </div>
+       </form>
+       
+    </div>
+</div
