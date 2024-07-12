@@ -43,7 +43,7 @@ namespace MVC_Template_Net6_Eksta_Ozelliklerin_Eklenmesi.Models
         [StringLength(20)]
         public string Role { get; set; } = "user";
 
-        public bool Locked { get; set; } = false;
+        public bool Locked { get; set; } = true;
 
 
        

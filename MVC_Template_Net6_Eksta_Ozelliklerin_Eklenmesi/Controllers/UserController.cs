@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MVC_Template_Net6_Eksta_Ozelliklerin_Eklenmesi.Entites;
 using MVC_Template_Net6_Eksta_Ozelliklerin_Eklenmesi.Models;
+using NETCore.Encrypt.Extensions;
 
 namespace MVC_Template_Net6_Eksta_Ozelliklerin_Eklenmesi.Controllers
 {
@@ -44,5 +45,32 @@ namespace MVC_Template_Net6_Eksta_Ozelliklerin_Eklenmesi.Controllers
 
             return View();
         }
+
+        [HttpPost]
+        public IActionResult Create(CreateUserModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                User user = _ımapper.Map<User>(model);
+                user.Password=DoMd5HashedString(model.Password);
+                _dbContext.Users.Add(user);
+                _dbContext.SaveChanges();
+
+                return RedirectToAction(nameof(Index));
+            }
+            
+            return View(model);
+
+            
+        }
+
+        private string DoMd5HashedString(String s)
+        {
+            string md5Salt = _configuration.GetValue<string>("AppSettings:Md5Salt");
+            string salted = s + md5Salt;
+            string hashed = salted.MD5();
+            return hashed;
+        }
+
     }
 }
