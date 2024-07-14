@@ -64,6 +64,35 @@ namespace MVC_Template_Net6_Eksta_Ozelliklerin_Eklenmesi.Controllers
             
         }
 
+        public IActionResult Edit(Guid id)
+        {
+            User user=_dbContext.Users.Find(id);
+            EditUserModel model=_ımapper.Map<EditUserModel>(user);
+            model.Password = user.Password;
+            model.RePassword = user.Password;
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(Guid id, EditUserModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                User user = _dbContext.Users.Find(id);
+                _ımapper.Map( model, user);//modeldeki verileri alıp user daki değişkenlere atama yapar
+                user.Password = DoMd5HashedString(model.Password);
+
+               
+                _dbContext.SaveChanges();
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(model);
+
+
+        }
+
         private string DoMd5HashedString(String s)
         {
             string md5Salt = _configuration.GetValue<string>("AppSettings:Md5Salt");
