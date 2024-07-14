@@ -103,6 +103,19 @@ namespace MVC_Template_Net6_Eksta_Ozelliklerin_Eklenmesi.Controllers
 
 
         }
+        [HttpGet]
+        public IActionResult Delete(Guid id)
+        {
+            User user = _dbContext.Users.Find(id);
+            if (user != null)
+            {
+                _dbContext.Users.Remove(user);
+                _dbContext.SaveChanges();
+            }
+               
+             return RedirectToAction(nameof(Index));
+
+        }
 
         private string DoMd5HashedString(String s)
         {
