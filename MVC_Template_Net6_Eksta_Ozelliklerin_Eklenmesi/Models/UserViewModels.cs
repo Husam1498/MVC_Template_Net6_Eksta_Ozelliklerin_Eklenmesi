@@ -46,25 +46,10 @@ namespace MVC_Template_Net6_Eksta_Ozelliklerin_Eklenmesi.Models
         public bool Locked { get; set; } = true;
 
     }
-    public class EditUserModel {
-
-       
-        [StringLength(30)]
-        public String Fullname { get; set; }
-
-      
-        [StringLength(20)]
-        public String Username { get; set; }
-
-        
-        public string Password { get; set; }
-    
+    public class EditUserModel:CreateUserModel {
+ 
+        public string Password { get; set; }      
         public string RePassword { get; set; }
-
-        [StringLength(20)]
-        public string Role { get; set; } = "user";
-
-        public bool Locked { get; set; } = true;
     }
 
 }
