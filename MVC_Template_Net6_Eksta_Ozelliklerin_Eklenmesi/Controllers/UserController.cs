@@ -51,6 +51,12 @@ namespace MVC_Template_Net6_Eksta_Ozelliklerin_Eklenmesi.Controllers
         {
             if (ModelState.IsValid)
             {
+                if(_dbContext.Users.Any(x => x.UserName.ToLower() == model.Username.ToLower()))
+                {
+                    ModelState.AddModelError(nameof(model.Username),"Username database de mevcuttur");
+                    return View(model);
+                }
+
                 User user = _ımapper.Map<User>(model);
                 user.Password=DoMd5HashedString(model.Password);
                 _dbContext.Users.Add(user);
@@ -78,6 +84,11 @@ namespace MVC_Template_Net6_Eksta_Ozelliklerin_Eklenmesi.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (_dbContext.Users.Any(x => x.UserName.ToLower() == model.Username.ToLower() && x.Id!=id) )//Benim id dışındaki username leri kontrol et
+                {
+                    ModelState.AddModelError(nameof(model.Username), "Username database de mevcuttur");
+                    return View(model);
+                }
                 User user = _dbContext.Users.Find(id);
                 _ımapper.Map( model, user);//modeldeki verileri alıp user daki değişkenlere atama yapar
                 user.Password = DoMd5HashedString(model.Password);
