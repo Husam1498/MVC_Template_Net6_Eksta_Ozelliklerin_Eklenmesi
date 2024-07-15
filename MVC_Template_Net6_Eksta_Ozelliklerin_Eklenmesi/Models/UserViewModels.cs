@@ -44,6 +44,7 @@ namespace MVC_Template_Net6_Eksta_Ozelliklerin_Eklenmesi.Models
         public string Role { get; set; } = "user";
 
         public bool Locked { get; set; } = true;
+        public string? Done { get; set; }
 
     }
     public class EditUserModel:CreateUserModel {

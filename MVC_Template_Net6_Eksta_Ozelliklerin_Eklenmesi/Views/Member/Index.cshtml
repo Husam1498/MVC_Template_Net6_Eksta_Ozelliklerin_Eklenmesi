@@ -1,0 +1,47 @@
+﻿@{
+    ViewData["Title"] = "User";
+}
+<div class="row">
+    <div class="col-4 offset-4">
+        <h1 class="display-4 border-bottom text-center pb-2">@ViewData["Title"] </h1>
+        <hr />
+    </div>
+</div>
+
+<div class="row mb-3">
+    <div class="col">
+        <a data-bs-toggle="modal" data-bs-target="#modalAdd" class="btn btn-primary btn-sm "
+           data-ajax="true" data-ajax-method="Get" data-ajax-url="/Member/AddNewUserPartial" data-ajax-update="#moadAddContent">
+            <i class="fa fa-plus me-2 "></i>New User</a>
+
+        <a id="refresh" data-ajax="true" data-ajax-method="Get" data-ajax-url="/Member/MemberListPartial" data-ajax-update="#panel" class="btn btn-outline-secondary btn-sm "><i class="fa fa-sync-alt me-2 "></i>Refresh</a>
+
+    </div>
+</div>
+
+<div class="row mb-3">
+    <div class="col">
+        <div id="panel">
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalAdd" tabindex="-1"  aria-hidden="true">
+    <div class="modal-dialog">
+        <div id="moadAddContent"class="modal-content">
+            <div class="col">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
+    <script>
+        $(function () {
+            refresh.click();
+        });
+    </script>
+}
