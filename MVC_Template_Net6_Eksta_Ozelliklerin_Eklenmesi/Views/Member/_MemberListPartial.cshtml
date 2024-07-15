@@ -36,8 +36,9 @@
                        data-bs-toggle="modal" data-bs-target="#modalEdit" class="btn btn-primary btn-sm "
                        data-ajax="true" data-ajax-method="Get" data-ajax-update="#moadEditContent">
                         <i class="fa fa-edit me-2 "></i>Edit</a>
-                    <a asp-action="Delete" asp-route-id="@user.Id" class="btn btn-danger btn-sm"
-                       onclick="return confirm('Bu kaydı Silmek istediğinize Eminmisisniz: @user.UserName ?')">
+
+                    <a asp-action="DeleteUser" asp-route-id="@user.Id" class="btn btn-danger btn-sm" data-ajax="true" data-ajax-method="Get" data-ajax-update="#panel"
+                       data-ajax-confirm="Bu kaydı Silmek istediğinize Eminmisisniz: @user.UserName ?">
                         <i class="fa fa-trash me-2 "></i>Del
                     </a>
                 </td>

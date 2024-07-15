@@ -91,6 +91,16 @@ namespace MVC_Template_Net6_Eksta_Ozelliklerin_Eklenmesi.Controllers
 
 
         }
+        public IActionResult DeleteUser(Guid id)
+        {
+            User user = _dbContext.Users.Find(id);
+            if (user != null)
+            {
+                _dbContext.Users.Remove(user);
+                _dbContext.SaveChanges();
+            }
+            return MemberListPartial();
+        }
         private string DoMd5HashedString(String s)
         {
             string md5Salt = _configuration.GetValue<string>("AppSettings:Md5Salt");
