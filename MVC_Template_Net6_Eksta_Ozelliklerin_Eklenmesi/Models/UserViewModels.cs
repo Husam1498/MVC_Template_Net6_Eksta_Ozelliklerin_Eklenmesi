@@ -48,9 +48,11 @@ namespace MVC_Template_Net6_Eksta_Ozelliklerin_Eklenmesi.Models
 
     }
     public class EditUserModel:CreateUserModel {
- 
+        public Guid Id { get; set; }
         public string Password { get; set; }      
         public string RePassword { get; set; }
+        public string? Done { get; set; }
+
     }
 
 }

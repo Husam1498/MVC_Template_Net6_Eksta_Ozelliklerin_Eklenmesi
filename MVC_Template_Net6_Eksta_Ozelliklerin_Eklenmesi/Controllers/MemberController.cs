@@ -47,7 +47,7 @@ namespace MVC_Template_Net6_Eksta_Ozelliklerin_Eklenmesi.Controllers
                 if (_dbContext.Users.Any(x => x.UserName.ToLower() == model.Username.ToLower()))
                 {
                     ModelState.AddModelError(nameof(model.Username), "Username database de mevcuttur");
-                    return View(model);
+                    return PartialView("_AddNewUserPartial", model);
                 }
 
                 User user = _ımapper.Map<User>(model);
@@ -60,6 +60,37 @@ namespace MVC_Template_Net6_Eksta_Ozelliklerin_Eklenmesi.Controllers
             return PartialView("_AddNewUserPartial", model);
         }
 
+        public IActionResult EditUserPartial(Guid id)
+        {
+            User user = _dbContext.Users.Find(id);
+            EditUserModel model = _ımapper.Map<EditUserModel>(user);
+            model.Password = user.Password;
+            model.RePassword = user.Password;
+
+            return PartialView("_EditUserPartial", model);
+        }
+        [HttpPost]
+        public IActionResult EditUser(Guid id, EditUserModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                if (_dbContext.Users.Any(x => x.UserName.ToLower() == model.Username.ToLower() && x.Id != id))//Benim id dışındaki username leri kontrol et
+                {
+                    ModelState.AddModelError(nameof(model.Username), "Username database de mevcuttur");
+                    return PartialView("_EditUserPartial", model);
+                }
+                User user = _dbContext.Users.Find(id);
+                _ımapper.Map(model, user);//modeldeki verileri alıp user daki değişkenlere atama yapar
+                user.Password = DoMd5HashedString(model.Password);
+                _dbContext.SaveChanges();
+
+                return PartialView("_EditUserPartial", new EditUserModel { Done = "user updated" });
+            }
+
+            return PartialView("_EditUserPartial", model);
+
+
+        }
         private string DoMd5HashedString(String s)
         {
             string md5Salt = _configuration.GetValue<string>("AppSettings:Md5Salt");
