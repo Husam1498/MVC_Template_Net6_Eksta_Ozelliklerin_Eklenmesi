@@ -3,10 +3,9 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MVC_Template_Net6_Eksta_Ozelliklerin_Eklenmesi.Entites;
+using MVC_Template_Net6_Eksta_Ozelliklerin_Eklenmesi.Helpers;
 using MVC_Template_Net6_Eksta_Ozelliklerin_Eklenmesi.Models;
-using NETCore.Encrypt.Extensions;
 using System.ComponentModel.DataAnnotations;
-using System.Net.Mime;
 using System.Security.Claims;
 
 namespace MVC_Template_Net6_Eksta_Ozelliklerin_Eklenmesi.Controllers
@@ -16,11 +15,13 @@ namespace MVC_Template_Net6_Eksta_Ozelliklerin_Eklenmesi.Controllers
     {
         private readonly DatabaseContext _dbContext;
         private readonly IConfiguration _configuration;
+        private readonly IHash _IHash;
 
-        public AccountController(DatabaseContext dbContext, IConfiguration configuration)
+        public AccountController(DatabaseContext dbContext, IConfiguration configuration, IHash ıHash)
         {
             _dbContext = dbContext;
             _configuration = configuration;
+            _IHash = ıHash;
         }
 
         [AllowAnonymous]
@@ -35,10 +36,9 @@ namespace MVC_Template_Net6_Eksta_Ozelliklerin_Eklenmesi.Controllers
         {
             if (ModelState.IsValid)
             {
-                string hashed = DoMd5HashedString(model.Password);
+                string hashed = _IHash.DoMd5HashedString(model.Password);
 
                 User user = _dbContext.Users.SingleOrDefault(x => x.UserName.ToLower() == model.Username.ToLower() && x.Password == hashed);
-
 
                 if (user != null)
                 {
@@ -68,18 +68,8 @@ namespace MVC_Template_Net6_Eksta_Ozelliklerin_Eklenmesi.Controllers
                     ModelState.AddModelError("", "Kullanıcı adı veya şifreniz hatalı");
                 }
 
-
-
             }
             return View(model);
-        }
-
-        private string DoMd5HashedString(String s)
-        {
-            string md5Salt = _configuration.GetValue<string>("AppSettings:Md5Salt");
-            string salted = s + md5Salt;
-            string hashed = salted.MD5();
-            return hashed;
         }
 
         [AllowAnonymous]
@@ -87,7 +77,6 @@ namespace MVC_Template_Net6_Eksta_Ozelliklerin_Eklenmesi.Controllers
         {
             return View();
         }
-
 
         [HttpPost]
         [AllowAnonymous]
@@ -103,8 +92,7 @@ namespace MVC_Template_Net6_Eksta_Ozelliklerin_Eklenmesi.Controllers
                 }
                 else
                 {
-
-                    string hashed = DoMd5HashedString(model.Password);
+                    string hashed = _IHash.DoMd5HashedString(model.Password);
 
                     User user = new User()
                     {
@@ -116,6 +104,7 @@ namespace MVC_Template_Net6_Eksta_Ozelliklerin_Eklenmesi.Controllers
                 }
             }
             int affectedRowCount = _dbContext.SaveChanges();
+
             if (affectedRowCount == 0)
             {
                 ModelState.AddModelError("Username", "Veri Tabanına kayıt Başarısız");
@@ -127,11 +116,9 @@ namespace MVC_Template_Net6_Eksta_Ozelliklerin_Eklenmesi.Controllers
             return View(model);
         }
 
-
         public IActionResult Profile()
         {
             ProfileInfoLoader();
-
             return View();
         }
 
@@ -161,7 +148,6 @@ namespace MVC_Template_Net6_Eksta_Ozelliklerin_Eklenmesi.Controllers
             return View("Profile");
         }
 
-
         [HttpPost]
         public IActionResult ProfileChangePassword([Required][MinLength(3)][MaxLength(8)] string password)
         {
@@ -170,7 +156,7 @@ namespace MVC_Template_Net6_Eksta_Ozelliklerin_Eklenmesi.Controllers
                 Guid userid = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
                 User user = _dbContext.Users.SingleOrDefault(u => u.Id == userid);
-                string hashedPassword = DoMd5HashedString(password);
+                string hashedPassword = _IHash.DoMd5HashedString(password);
 
                 user.Password = hashedPassword;
                 _dbContext.SaveChanges();
@@ -180,6 +166,7 @@ namespace MVC_Template_Net6_Eksta_Ozelliklerin_Eklenmesi.Controllers
             ProfileInfoLoader();//fullname hatalarının gözükmesi için
             return View("Profile");
         }
+
         public IActionResult Logout()
         {
             HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
@@ -207,15 +194,9 @@ namespace MVC_Template_Net6_Eksta_Ozelliklerin_Eklenmesi.Controllers
                 _dbContext.SaveChanges();
 
                 return RedirectToAction(nameof(Profile));
-
-
-
             }
             ProfileInfoLoader();//fullname hatalarının gözükmesi için
             return View("Profile");
         }
-
-
-
     }
 }

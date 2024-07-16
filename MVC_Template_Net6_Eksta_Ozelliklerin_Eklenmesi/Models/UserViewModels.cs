@@ -2,6 +2,7 @@
 
 namespace MVC_Template_Net6_Eksta_Ozelliklerin_Eklenmesi.Models
 {
+
     public class UserModel
     {
 
@@ -18,6 +19,7 @@ namespace MVC_Template_Net6_Eksta_Ozelliklerin_Eklenmesi.Models
         public string Role { get; set; } = "user";
 
     }
+
     public class CreateUserModel
     {
         [Required(ErrorMessage = "fullname boş geçilemez")]
@@ -47,6 +49,7 @@ namespace MVC_Template_Net6_Eksta_Ozelliklerin_Eklenmesi.Models
         public string? Done { get; set; }
 
     }
+
     public class EditUserModel:CreateUserModel {
         public Guid Id { get; set; }
         public string Password { get; set; }      

@@ -22,7 +22,6 @@ namespace MVC_Template_Net6_Eksta_Ozelliklerin_Eklenmesi.Entites
         [MaxLength(8)]
         public String Password { get; set; }
 
-
         public bool Locked { get; set; } = true;
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;

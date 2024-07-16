@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using MVC_Template_Net6_Eksta_Ozelliklerin_Eklenmesi.Entites;
+using MVC_Template_Net6_Eksta_Ozelliklerin_Eklenmesi.Helpers;
 using System.Reflection;
 
 namespace MVC_Template_Net6_Eksta_Ozelliklerin_Eklenmesi
@@ -32,6 +33,7 @@ namespace MVC_Template_Net6_Eksta_Ozelliklerin_Eklenmesi
                     opts.AccessDeniedPath = "/Home/AccessDenied";
 
                 });
+            builder.Services.AddScoped<IHash, Hash>();//Ihash interfaceni kullandýðým yerlerde bana Hash Classýný getir
 
             var app = builder.Build();
 
